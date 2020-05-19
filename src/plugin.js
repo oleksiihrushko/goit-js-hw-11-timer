@@ -22,11 +22,16 @@ export class CountdownTimer {
   }
   changeDate() {
     const time = this.targetDate.getTime() - new Date().getTime();
+    time > 0 ? this.calculateTime(time) : this.viewError();
+  }
+  calculateTime(time) {
     const days = Math.floor(time / (1000 * 60 * 60 * 24));
     const hours = Math.floor((time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const mins = Math.floor((time % (1000 * 60 * 60)) / (1000 * 60));
     const secs = Math.floor((time % (1000 * 60)) / 1000);
-
+    this.changeElems(days, hours, mins, secs);
+  }
+  changeElems(days, hours, mins, secs) {
     this.refs.daysElem.innerHTML = days;
     this.refs.hoursElem.innerHTML = hours;
     this.refs.minsElem.innerHTML = mins;
@@ -37,5 +42,8 @@ export class CountdownTimer {
     setInterval(() => {
       this.changeDate();
     }, 1000);
+  }
+  viewError() {
+    document.querySelector(this.selector).innerHTML = 'Timer is over';
   }
 }
